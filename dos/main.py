@@ -82,7 +82,7 @@ def worker(url, ua):
         url = parsed_url._replace(query=new_query).geturl()
         host = parsed_url.hostname
         headers = {
-            "User-Agent": random.choice(UA), # pick randomly user agent 
+            "User-Agent": ua, # set random user agent 
             "Cache-Control": "no-cache", # don't cache request, in the case same one repeats
             "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7",  # accept most of the encoding
             "Referer": r,

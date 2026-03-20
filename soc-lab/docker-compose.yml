@@ -1,0 +1,10 @@
+# Run `.\scripts\init-lab.ps1` (or `./scripts/init-lab.sh`) once before using this file.
+# Then: docker compose up -d --build
+#
+# Requires Docker Compose v2.20+ (`include`).
+
+name: soclab
+
+include:
+  - path: .vendor/wazuh-docker/single-node/docker-compose.yml
+  - path: compose.lab.yml

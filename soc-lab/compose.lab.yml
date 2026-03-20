@@ -1,0 +1,98 @@
+# Merge with official Wazuh single-node compose:
+#   docker compose -p soclab -f .vendor/wazuh-docker/single-node/docker-compose.yml -f compose.lab.yml up -d
+#
+# Lab-only: isolated bursts and auth tests. Do not expose to the internet.
+
+services:
+  wazuh.manager:
+    volumes:
+      - attack-telemetry:/var/ossec/logs/lab-attack:ro
+
+  dos-target:
+    image: nginx:alpine
+    hostname: dos-target
+    restart: unless-stopped
+
+  dos-attacker:
+    image: alpine:3.19
+    hostname: dos-attacker
+    restart: unless-stopped
+    cap_add:
+      - NET_RAW
+    depends_on:
+      - dos-target
+    volumes:
+      - attack-telemetry:/telemetry
+      - ./attacks/lab-telemetry.sh:/lab-telemetry.sh:ro
+      - ./attacks/dos-loop.sh:/run.sh:ro
+    # Strip CR so Windows CRLF bind-mounts do not break sleep/do/numbers in BusyBox sh
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' </run.sh | /bin/sh"]
+
+  smb-victim:
+    image: dperson/samba
+    hostname: smb-victim
+    restart: unless-stopped
+    ports:
+      - "4139:139"
+      - "4445:445"
+      - "4137:137/udp"
+      - "4138:138/udp"
+    command:
+      - "-p"
+      - "-w"
+      - "WORKGROUP"
+      - "-u"
+      - "Administrator;LabWindows01!"
+      - "-s"
+      - "data;/data;yes;no;no;Administrator"
+    volumes:
+      - smb-data:/data
+
+  smb-bruteforce:
+    image: alpine:3.19
+    hostname: smb-bruteforce
+    restart: unless-stopped
+    depends_on:
+      - smb-victim
+    volumes:
+      - attack-telemetry:/telemetry
+      - ./attacks/lab-telemetry.sh:/lab-telemetry.sh:ro
+      - ./attacks/brute-smb.sh:/run.sh:ro
+      - ./attacks/wordlists:/wordlists:ro
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' </run.sh | /bin/sh"]
+
+  gophish:
+    build: ./images/gophish
+    hostname: gophish
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+      - "8085:80"
+
+  gophish-traffic:
+    image: alpine:3.19
+    hostname: gophish-traffic
+    restart: unless-stopped
+    depends_on:
+      - gophish
+    volumes:
+      - attack-telemetry:/telemetry
+      - ./attacks/lab-telemetry.sh:/lab-telemetry.sh:ro
+      - ./attacks/gophish-traffic.sh:/run.sh:ro
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' </run.sh | /bin/sh"]
+
+  malware-sim:
+    image: alpine:3.19
+    hostname: malware-sim
+    restart: unless-stopped
+    volumes:
+      - attack-telemetry:/telemetry
+      - ./attacks/lab-telemetry.sh:/lab-telemetry.sh:ro
+      - ./attacks/malware-sim.sh:/run.sh:ro
+      - malware-drop:/tmp/lab-malware
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' </run.sh | /bin/sh"]
+
+volumes:
+  attack-telemetry:
+  smb-data:
+  malware-drop:

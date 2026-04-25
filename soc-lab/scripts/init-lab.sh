@@ -4,8 +4,27 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR="$ROOT/.vendor/wazuh-docker"
 SN="$VENDOR/single-node"
 
+compose_cmd() {
+  if command -v podman >/dev/null 2>&1 && podman compose version >/dev/null 2>&1; then
+    echo "podman compose"
+    return 0
+  fi
+
+  if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+    echo "docker compose"
+    return 0
+  fi
+
+  return 1
+}
+
 if ! command -v git >/dev/null 2>&1; then
   echo "Git is required." >&2
+  exit 1
+fi
+
+if ! COMPOSE="$(compose_cmd)"; then
+  echo "Compose CLI not found. Install Docker Compose v2 or Podman with compose support." >&2
   exit 1
 fi
 
@@ -17,7 +36,17 @@ fi
 
 echo "Generating Wazuh indexer TLS certificates (one-time)..."
 cd "$SN"
-docker compose -f generate-indexer-certs.yml run --rm generator
+if ! $COMPOSE -f generate-indexer-certs.yml run --rm generator; then
+  if [[ "$COMPOSE" == "docker compose" ]] && command -v podman >/dev/null 2>&1; then
+    cat >&2 <<'EOF'
+Failed to run docker compose. On Kali with Podman, ensure the user socket is active:
+  systemctl --user enable --now podman.socket
+  export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+Then re-run ./scripts/init-lab.sh.
+EOF
+  fi
+  exit 1
+fi
 
 cp "$ROOT/config/wazuh_dashboard/opensearch_dashboards.yml" \
   "$SN/config/wazuh_dashboard/opensearch_dashboards.yml"
@@ -67,4 +96,4 @@ EOF
   echo "Patched wazuh_manager.conf: lab attack telemetry localfile."
 fi
 
-echo "Done. Dashboard: http://127.0.0.1:5601 - Run: ./scripts/up.sh - restart manager if already running: docker compose restart wazuh.manager"
+echo "Done. Dashboard: http://127.0.0.1:5601 - Run: ./scripts/up.sh - restart manager if already running: $COMPOSE restart wazuh.manager"

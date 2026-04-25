@@ -28,4 +28,4 @@ if ! COMPOSE="$(compose_cmd)"; then
   exit 1
 fi
 
-$COMPOSE -p soclab -f "$WAZUH" -f "$LAB" "$@"
+$COMPOSE --project-directory "$ROOT" -p soclab -f "$WAZUH" -f "$LAB" "$@"

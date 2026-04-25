@@ -64,6 +64,18 @@ podman compose -f docker-compose-linux.yml up -d --build
 # or: docker compose -f docker-compose-linux.yml up -d --build
 ```
 
+For this repo, prefer the wrapper script:
+
+```bash
+./scripts/up.sh up -d --build
+```
+
+`up.sh` passes `--project-directory` so relative paths in `compose.lab.yml` (for example `build: ./images/gophish`) always resolve from the repo root. This avoids errors such as:
+
+```text
+unable to prepare context: path ".../.vendor/wazuh-docker/single-node/images/gophish" not found
+```
+
 ## URLs and ports (host)
 
 | Service | URL / port | Notes |

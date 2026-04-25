@@ -1,9 +1,6 @@
 # SOC lab: Wazuh + automated attack traffic (Docker)
-## Author: Mesud Pasic (Setec d.o.o. & Tranchulas d.o.o.)
-## Contact: office@setec.ba
-
-![demo.png](demo.png "Wazuh Dashboard Example")
-
+# Author: Mesud Pasic (Setec d.o.o. & Tranchulas d.o.o.)
+# Contact: office@setec.ba
 
 This layout runs a **Wazuh** single-node stack (official images) alongside **lab-only** containers that generate:
 
@@ -58,6 +55,13 @@ Equivalent manual command:
 
 ```bash
 docker compose -p soclab -f .vendor/wazuh-docker/single-node/docker-compose.yml -f compose.lab.yml up -d --build
+```
+
+**Linux (Kali) / Podman:** use **`docker-compose-linux.yml`**, which `include`s the vendor Wazuh file and `compose.lab.yml`. Do **not** run `compose.lab.yml` by itself (those services are merge-only and have no `image:` for `wazuh.manager`).
+
+```bash
+podman compose -f docker-compose-linux.yml up -d --build
+# or: docker compose -f docker-compose-linux.yml up -d --build
 ```
 
 ## URLs and ports (host)

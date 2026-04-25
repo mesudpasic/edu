@@ -1,0 +1,24 @@
+# Full SOC lab stack for Linux (Kali) — use THIS file, not `compose.lab.yml` alone.
+#
+# `compose.lab.yml` only *merges* into the Wazuh single-node file; it does not define
+# `image:` for wazuh.manager and others. Running only `-f compose.lab.yml` fails with:
+#   service "wazuh.manager" has neither an image nor a build context specified
+#
+# Prerequisites (from repo root):
+#   - ./scripts/init-lab.sh   (or init-lab.ps1 on Windows) — clones vendor, certs, patches
+#   - Docker Compose v2.20+ with `include:` support, or use the manual two-file command below
+#
+# Podman (Kali) examples — run from the soc-lab directory:
+#   podman compose -f docker-compose-linux.yml up -d --build
+#   # or, if you use the docker CLI shim:
+#   docker compose -f docker-compose-linux.yml up -d --build
+#
+# If `include` is not supported by your compose, use the equivalent explicit merge:
+#   podman compose -f .vendor/wazuh-docker/single-node/docker-compose.yml -f compose.lab.yml up -d --build
+#
+# Project name (prefix for containers/volumes) matches the main compose file.
+name: soclab
+
+include:
+  - path: .vendor/wazuh-docker/single-node/docker-compose.yml
+  - path: compose.lab.yml

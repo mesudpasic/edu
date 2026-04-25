@@ -84,6 +84,14 @@ Error response from daemon: bad parameter: link is not supported
 
 re-run `./scripts/init-lab.sh` once. It patches the vendor compose file to remove legacy `links:` from `wazuh.dashboard` (Podman does not support that parameter).
 
+If Podman rootless fails with:
+
+```text
+crun: setrlimit `RLIMIT_NOFILE`: Operation not permitted
+```
+
+re-run `./scripts/init-lab.sh`. It also strips vendor `ulimits` for `wazuh.manager` and `wazuh.indexer`, which are often not allowed in rootless Podman sessions.
+
 ## URLs and ports (host)
 
 | Service | URL / port | Notes |

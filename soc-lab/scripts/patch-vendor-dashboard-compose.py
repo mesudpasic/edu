@@ -58,6 +58,30 @@ def main() -> int:
         text = text.replace(links_old, "")
         print("Removed wazuh.dashboard links (Podman compatibility).")
 
+    mgr_ulimits = """    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 655360
+        hard: 655360
+"""
+    if mgr_ulimits in text:
+        text = text.replace(mgr_ulimits, "")
+        print("Removed wazuh.manager ulimits (rootless Podman compatibility).")
+
+    idx_ulimits = """    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+"""
+    if idx_ulimits in text:
+        text = text.replace(idx_ulimits, "")
+        print("Removed wazuh.indexer ulimits (rootless Podman compatibility).")
+
     if text != orig:
         path.write_text(text, encoding="utf-8", newline="\n")
     return 0

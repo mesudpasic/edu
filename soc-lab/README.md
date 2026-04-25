@@ -76,6 +76,14 @@ For this repo, prefer the wrapper script:
 unable to prepare context: path ".../.vendor/wazuh-docker/single-node/images/gophish" not found
 ```
 
+If you see Podman fail with:
+
+```text
+Error response from daemon: bad parameter: link is not supported
+```
+
+re-run `./scripts/init-lab.sh` once. It patches the vendor compose file to remove legacy `links:` from `wazuh.dashboard` (Podman does not support that parameter).
+
 ## URLs and ports (host)
 
 | Service | URL / port | Notes |

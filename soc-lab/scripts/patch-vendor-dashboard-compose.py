@@ -50,6 +50,14 @@ def main() -> int:
         text = text.replace(dep_old, dep_new)
         print("Patched wazuh.dashboard depends_on: wazuh.manager.")
 
+    links_old = """    links:
+      - wazuh.indexer:wazuh.indexer
+      - wazuh.manager:wazuh.manager
+"""
+    if links_old in text:
+        text = text.replace(links_old, "")
+        print("Removed wazuh.dashboard links (Podman compatibility).")
+
     if text != orig:
         path.write_text(text, encoding="utf-8", newline="\n")
     return 0

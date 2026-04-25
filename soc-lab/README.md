@@ -70,10 +70,16 @@ For this repo, prefer the wrapper script:
 ./scripts/up.sh up -d --build
 ```
 
-`up.sh` passes `--project-directory` so relative paths in `compose.lab.yml` (for example `build: ./images/gophish`) always resolve from the repo root. This avoids errors such as:
+`up.sh` uses `docker-compose-linux.yml` on Linux, so vendor and lab relative paths resolve in the correct locations. This avoids errors such as:
 
 ```text
 unable to prepare context: path ".../.vendor/wazuh-docker/single-node/images/gophish" not found
+```
+
+or:
+
+```text
+mount ".../config/wazuh_indexer/wazuh.indexer.yml" ... Not a directory
 ```
 
 If you see Podman fail with:

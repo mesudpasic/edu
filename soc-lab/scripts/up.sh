@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 WAZUH="$ROOT/.vendor/wazuh-docker/single-node/docker-compose.yml"
 LAB="$ROOT/compose.lab.yml"
+LINUX_COMPOSE="$ROOT/docker-compose-linux.yml"
 
 compose_cmd() {
   if command -v podman >/dev/null 2>&1 && podman compose version >/dev/null 2>&1; then
@@ -28,4 +29,8 @@ if ! COMPOSE="$(compose_cmd)"; then
   exit 1
 fi
 
-$COMPOSE --project-directory "$ROOT" -p soclab -f "$WAZUH" -f "$LAB" "$@"
+if [[ -f "$LINUX_COMPOSE" ]]; then
+  $COMPOSE -f "$LINUX_COMPOSE" "$@"
+else
+  $COMPOSE -p soclab -f "$WAZUH" -f "$LAB" "$@"
+fi

@@ -98,6 +98,14 @@ crun: setrlimit `RLIMIT_NOFILE`: Operation not permitted
 
 re-run `./scripts/init-lab.sh`. It also strips vendor `ulimits` for `wazuh.manager` and `wazuh.indexer`, which are often not allowed in rootless Podman sessions.
 
+If Compose reports:
+
+```text
+services.wazuh.manager conflicts with imported resource
+```
+
+update to the latest repo changes and re-run `./scripts/init-lab.sh`. The lab now patches the vendor `wazuh.manager` volume directly (for `attack-telemetry`) instead of overriding `wazuh.manager` in `compose.lab.yml`, which avoids Podman `include` conflicts.
+
 ## URLs and ports (host)
 
 | Service | URL / port | Notes |

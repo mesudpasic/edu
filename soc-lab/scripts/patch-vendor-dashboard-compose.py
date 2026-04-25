@@ -82,6 +82,12 @@ def main() -> int:
         text = text.replace(idx_ulimits, "")
         print("Removed wazuh.indexer ulimits (rootless Podman compatibility).")
 
+    mgr_vol_anchor = "      - wazuh_logs:/var/ossec/logs"
+    mgr_vol_extra = "      - attack-telemetry:/var/ossec/logs/lab-attack:ro"
+    if mgr_vol_extra not in text and mgr_vol_anchor in text:
+        text = text.replace(mgr_vol_anchor, f"{mgr_vol_anchor}\n{mgr_vol_extra}")
+        print("Patched wazuh.manager volume: attack-telemetry mount.")
+
     if text != orig:
         path.write_text(text, encoding="utf-8", newline="\n")
     return 0

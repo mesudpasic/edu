@@ -4,10 +4,6 @@
 # Lab-only: isolated bursts and auth tests. Do not expose to the internet.
 
 services:
-  wazuh.manager:
-    volumes:
-      - attack-telemetry:/var/ossec/logs/lab-attack:ro
-
   dos-target:
     image: nginx:alpine
     hostname: dos-target

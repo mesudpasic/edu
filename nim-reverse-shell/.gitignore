@@ -1,0 +1,56 @@
+# Nim build output
+nimcache/
+htmldocs/
+
+# Compiled binaries
+*.exe
+*.dll
+*.pdb
+*.ilk
+
+# Static/Dynamic libs
+*.lib
+*.a
+
+# Object files
+*.o
+*.obj
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Windows files
+Thumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.vcxproj.user
+
+# Testing
+testresults/
+
+# Packages
+nimblecache/
+
+# Generated documentation
+docs/
+
+# Environment files
+.env
+
+# Archive files
+*.zip
+*.7z

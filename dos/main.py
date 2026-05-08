@@ -50,7 +50,7 @@ def performFlooding():
     url = sys.argv[1]  # first argument is targeted URL
     logger.info(f"Targeted URL: {url}")
     if len(sys.argv) > 2:
-        THREAD_LIMIT = sys.argv[2]
+        THREAD_LIMIT = int(sys.argv[2])
     response = requests.get(USER_AGENTS_URL) # get user agents to simulate request are coming from different devices :)
     if response.status_code == 200:
         UA = response.text.split("\n")

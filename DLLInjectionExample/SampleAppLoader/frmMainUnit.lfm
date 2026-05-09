@@ -1,0 +1,22 @@
+object frmMain: TfrmMain
+  Left = 682
+  Height = 231
+  Top = 37
+  Width = 468
+  Caption = 'DLL Injection Example'
+  ClientHeight = 231
+  ClientWidth = 468
+  DesignTimePPI = 144
+  Position = poDesktopCenter
+  LCLVersion = '4.6.0.0'
+  OnCreate = FormCreate
+  object Button1: TButton
+    Left = 128
+    Height = 38
+    Top = 88
+    Width = 250
+    Caption = 'Open mspaint & inject DLL'
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+end

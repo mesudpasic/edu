@@ -1,0 +1,76 @@
+# Compiled Object files
+*.o
+*.ppu
+*.or
+*.a
+*.so
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.app
+*.out
+
+# Lazarus backup files
+*.bak
+*.bk?
+*.~*
+backup/
+
+# Lazarus session / desktop files
+*.lps
+*.lpi~
+*.lpr~
+*.lfm~
+*.pas~
+*.inc~
+*.compiled
+
+# Debug info
+*.dbg
+*.dSYM/
+
+# Generated binaries
+lib/
+bin/
+
+# Build modes
+/debug/
+/release/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*~
+
+# Lazarus config cache
+*.res
+*.rst
+*.lrt
+
+# Temporary files
+*.tmp
+*.temp
+
+# FPC generated
+ppas.bat
+ppas.sh
+link.res
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Local Lazarus settings
+*.local
+
+# Git merge leftovers
+*.orig

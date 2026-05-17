@@ -1,0 +1,22 @@
+object frmMain: TfrmMain
+  Left = 434
+  Height = 240
+  Top = 32
+  Width = 320
+  BorderStyle = bsSizeToolWin
+  Caption = 'DLLLoader'
+  ClientHeight = 240
+  ClientWidth = 320
+  DesignTimePPI = 120
+  Position = poDesktopCenter
+  LCLVersion = '4.6.0.0'
+  object Button1: TButton
+    Left = 64
+    Height = 31
+    Top = 104
+    Width = 200
+    Caption = 'Load DLL from Memory'
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+end

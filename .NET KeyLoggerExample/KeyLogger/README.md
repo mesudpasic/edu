@@ -77,19 +77,17 @@ Uses the Windows low-level keyboard hook API (`SetWindowsHookEx` with `WH_KEYBOA
 - Antivirus and EDR tools often flag keyboard hooks because they are also used by malware.
 - Does not require polling; events are delivered by the OS.
 
-This approach is similar to the Lazarus/Delphi low-level hook example discussed in class.
-
 ## KeyLogger.Poll
 
-Uses repeated calls to `GetAsyncKeyState`, similar to classic Delphi polling examples that loop through virtual keys 0–255.
+Uses repeated calls to `GetAsyncKeyState`, that loop through virtual keys 0–255.
 
 ### How it works
 
 1. A timer fires every 10 ms (configurable via `PollIntervalMilliseconds`).
 2. For each virtual key from `0` to `255`, the library checks `(GetAsyncKeyState(vk) & 1)`.
 3. Bit 0 indicates the key transitioned since the last call.
-4. Left mouse button (`VK_LBUTTON`, code 1) is skipped, as in the original Delphi sample.
-5. The virtual key is mapped to display text through `VirtualKeyMap` (like a Delphi `ListView` lookup table).
+4. Left mouse button (`VK_LBUTTON`, code 1) is skipped.
+5. The virtual key is mapped to display text through `VirtualKeyMap`.
 6. A `KeyDetected` event is raised with `KeyPollEventArgs`.
 
 ### Main types
